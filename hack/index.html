@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Control by Team 20LakhLPA</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .device {
+            flex-basis: 48%;
+            background-color: blueviolet;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .device img {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        .device button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .device button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Home Control by Team 20LakhLPA</h1>
+        <div class="device" id="fan">
+            <img src="images/fan.png" alt="Fan Icon">
+            <br>
+            <label for="fan">Fanspeed: 0 - 5</label>
+            <input type="number" id="fanrange" min="0" max="5" value="0">
+            <br>
+            <br><br>
+            <button onclick="toggleDevice('fan')">Switch</button>
+        </div>
+        <div class="device" id="lights">
+            <img src="images/light-bulb-14.png" alt="Lights Icon">
+            <label for="lights">Light Bulb</label>
+            <button onclick="toggleDevice('lights')">Switch</button>
+        </div>
+        <div class="device" id="led">
+            <img src="images/6092698.png" alt="LED Icon">
+            <br><input type="color" id="color-picker" value="#ff0000" onchange="changeDeviceColor(this.value)"><br>
+            <label for="led">LED</label>
+            <button onclick="toggleDevice('led')">Switch</button>
+        </div>
+        <div class="device" id="ac">
+            <img src="images/air-conditioner-icon-with-transparent-background-vector.jpg" alt="AC Icon">
+            <br>
+            <label for="ac">Ac Temperature: 16 - 32</label>
+            <input type="range" id="acrange" min="16" max="32" value="23">
+            <br>
+            <br>
+            <button onclick="toggleDevice('ac')">Switch</button>
+        </div>
+    </div>
+    <script>
+        const apiUrl = 'https://kodessphere-api.vercel.app';
+        async function toggleDevice(deviceType) {
+            try {
+                const response = await fetch(`${apiUrl}/${deviceType}/On`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({}),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to toggle device');
+                }
+                const deviceElement = document.getElementById(deviceType);
+                const button = deviceElement.querySelector('button');
+                button.textContent = response.status === 200 ? 'On' : 'Off';
+                deviceElement.style.backgroundColor = response.status === 200 ? '#00ff00' : '#ff0000';
+            } catch (error) {
+                console.error(error);
+                alert('Error toggling device');
+            }
+        }
+
+        function changeDeviceColor(color) {
+            document.getElementById("led").style.backgroundColor = color;
+        }
+    </script>
+</body>
+</html>
