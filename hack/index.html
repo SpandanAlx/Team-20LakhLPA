@@ -95,32 +95,16 @@
         </div>
     </div>
     <script>
-        const apiUrl = 'https://kodessphere-api.vercel.app';
-        async function toggleDevice(deviceType) {
-            try {
-                const response = await fetch(`${apiUrl}/${deviceType}/On`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({}),
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to toggle device');
-                }
-                const deviceElement = document.getElementById(deviceType);
-                const button = deviceElement.querySelector('button');
-                button.textContent = response.status === 200 ? 'On' : 'Off';
-                deviceElement.style.backgroundColor = response.status === 200 ? '#00ff00' : '#ff0000';
-            } catch (error) {
-                console.error(error);
-                alert('Error toggling device');
-            }
-        }
+        function toggleDevice(deviceType) {
+        const deviceElement = document.getElementById(deviceType);
+        const button = deviceElement.querySelector('button');
+        const currentColor = deviceElement.style.backgroundColor;
+        const newColor = currentColor === 'blueviolet' ? '#00ff00' : 'blueviolet'; // Toggle colors
 
-        function changeDeviceColor(color) {
-            document.getElementById("led").style.backgroundColor = color;
-        }
+        deviceElement.style.backgroundColor = newColor;
+
+        button.textContent = newColor === '#00ff00' ? 'On' : 'Off';
+       }
     </script>
 </body>
 </html>
